@@ -1,0 +1,115 @@
+import java.util.Scanner;
+public class HRManagement {
+    private Btth[] listEmp = new Btth[100];
+    private int count = 0;
+    private Scanner scanner = new Scanner(System.in);
+    public void run() {
+        int choice;
+        do {
+            System.out.println();
+            System.out.println("=========================================================");
+            System.out.println("  HỆ THỐNG QUẢN LÝ NHÂN SỰ CẤP CAO - RIKKEI HR");
+            System.out.println("=========================================================");
+            System.out.println("1. Thêm nhân viên");
+            System.out.println("2. Danh sách nhân viên");
+            System.out.println("3. Cập nhật lương");
+            System.out.println("4. Thống kê quỹ lương");
+            System.out.println("5. Thoát");
+            System.out.println("=========================================================");
+            System.out.print("Chọn chức năng (1-5): ");
+            choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    addEmployee();
+                    break;
+                case 2:
+                    displayEmployees();
+                    break;
+                case 3:
+                    updateSalary();
+                    break;
+                case 4:
+                    salaryStatistics();
+                    break;
+                case 5:
+                    System.out.println("Đã thoát chương trình!");
+                    break;
+                default:
+                    System.out.println("Lựa chọn không hợp lệ!");
+            }
+        } while (choice != 5);
+    }
+    public void addEmployee() {
+        if (count >= listEmp.length) {
+            System.out.println("Danh sách nhân viên đã đầy!");
+            return;
+        }
+        System.out.println();
+        System.out.println("===== THÊM NHÂN VIÊN =====");
+        System.out.print("Nhập họ tên: ");
+        String fullName = scanner.nextLine();
+        System.out.print("Nhập mức lương: ");
+        double salary = Double.parseDouble(scanner.nextLine());
+        Btth employee = new Btth(fullName, salary);
+        listEmp[count] = employee;
+        count++;
+        System.out.println("Thêm nhân viên thành công!");
+        System.out.println("Mã nhân viên: " + employee.getEmpId());
+    }
+    public void displayEmployees() {
+        if (count == 0) {
+            System.out.println("Danh sách nhân viên đang trống!");
+            return;
+        }
+        System.out.println("=======DANH SÁCH NHÂN SỰ CHÍNH THỨC RIKKEI HR =======");
+        System.out.printf("| %-8s | %-25s | %-15s | %-15s |%n", "Mã NV", "Họ và tên", "Mức lương", "Ghi chú");
+        for (int i = 0; i < count; i++) {
+            listEmp[i].displayEmployee();
+        }
+    }
+    public void updateSalary() {
+        if (count == 0) {
+            System.out.println("Danh sách nhân viên đang trống!");
+            return;
+        }
+        System.out.println();
+        System.out.println("===== CẬP NHẬT LƯƠNG =====");
+        System.out.print("Nhập mã nhân viên: ");
+        String empId = scanner.nextLine();
+        Btth employeeFound = null;
+        for (int i = 0; i < count; i++) {
+            if (listEmp[i]
+                    .getEmpId()
+                    .equalsIgnoreCase(empId)) {
+                employeeFound = listEmp[i];
+                break;
+            }
+        }
+        if (employeeFound == null) {
+            System.out.println("Không tìm thấy nhân viên có mã " + empId);
+            return;
+        }
+        System.out.println("Nhân viên: " + employeeFound.getFullName());
+        System.out.printf("Lương hiện tại: %,.0f VNĐ%n", employeeFound.getSalary());
+        System.out.print("Nhập mức lương mới: ");
+        double newSalary = Double.parseDouble(scanner.nextLine());
+        employeeFound.setSalary(newSalary);
+        System.out.printf("Lương sau cập nhật: %,.0f VNĐ%n", employeeFound.getSalary());
+    }
+    public void salaryStatistics() {
+        if (count == 0) {
+            System.out.println("Danh sách nhân viên đang trống!");
+            return;
+        }
+        double totalSalary = 0;
+        for (int i = 0; i < count; i++) {
+            totalSalary += listEmp[i].getSalary();
+        }
+        double averageSalary = totalSalary / count;
+        System.out.println("======THỐNG KÊ QUỸ LƯƠNG RIKKEI HR =====");
+        System.out.println("Tổng số nhân viên: " + count);
+        System.out.printf("Tổng quỹ lương: %,.0f VNĐ%n", totalSalary);
+        System.out.printf("Lương trung bình: %,.0f VNĐ%n", averageSalary);
+        System.out.printf("Lương tối thiểu: %,.0f VNĐ%n", Btth.MIN_SALARY);
+    }
+}
