@@ -1,0 +1,6 @@
+public class BtthMain {
+    public static void main(String[] args) {
+        HRManagement hrManagement = new HRManagement();
+        hrManagement.run();
+    }
+}
