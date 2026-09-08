@@ -1,0 +1,41 @@
+public class Btth {
+    public static final double MIN_SALARY = 4500000.0;
+    private static int autoId = 1001;
+    private String empId;
+    private String fullName;
+    private double salary;
+    public Btth(String fullName, double salary) {
+        this.empId = "EMP-" + autoId++;
+        this.fullName = fullName;
+        this.setSalary(salary);
+    }
+    public String getEmpId() {
+        return this.empId;
+    }
+    public String getFullName() {
+        return this.fullName;
+    }
+    public double getSalary() {
+        return this.salary;
+    }
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+    public void setSalary(double salary) {
+        if (salary < MIN_SALARY) {
+            System.out.printf("[Cảnh báo Lương] Mức lương %,.0f VNĐ nhỏ hơn tối thiểu, " + "tự động gán = %,.0f VNĐ%n", salary, MIN_SALARY);
+            this.salary = MIN_SALARY;
+        } else {
+            this.salary = salary;
+        }
+    }
+    public void displayEmployee() {
+        String note;
+        if (this.salary == MIN_SALARY) {
+            note = "Mức lương sàn";
+        } else {
+            note = "Hợp lệ";
+        }
+        System.out.printf("| %-8s | %-25s | %,15.0f | %-15s |%n", this.empId, this.fullName, this.salary, note);
+    }
+}
